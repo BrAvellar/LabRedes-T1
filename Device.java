@@ -13,6 +13,7 @@ import java.util.Base64;
 public class Device {
     // Porta padrão de comunicação entre dispositivos.
     private static final int PORT = 9876;
+    private static final String DEST_IP = "192.168.45.255";
     
     // Intervalos de tempo (ms).
     private static final long HEARTBEAT_INTERVAL = 5000;  // envia HEARTBEAT a cada 5s
@@ -182,7 +183,7 @@ public class Device {
     private void sendHeartbeat() {
         String message = "HEARTBEAT " + deviceName;
         // Enviar em broadcast (ou multicasts, dependendo da sua rede)
-        sendUdp(message, "192.0.0.255", PORT);
+        sendUdp(message, DEST_IP, PORT);
     }
     
     /**
@@ -219,7 +220,7 @@ public class Device {
         sendUdp("ACK " + id, addr.getHostAddress(), port);
         
         // Exibe (por simplicidade, só imprime na tela).
-        System.out.println(">>> [TALK recebido] ID=" + id + " Conteúdo=\"" + dados + 
+        System.out.println(">>> [TALK recebido] ID=" + id + " Mensagem=\"" + dados + 
                            "\" de " + addr.getHostAddress() + ":" + port);
         
         // Se quiser descartar duplicados, manter um set de "IDs recebidos".
