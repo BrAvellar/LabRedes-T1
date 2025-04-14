@@ -285,6 +285,7 @@ public class Device {
         
         String id = tokens[1];
         String hashRecebido = tokens[2];
+        System.out.println(hashRecebido);
         
         // TODO: comparar com hash calculado localmente do arquivo recebido.
         boolean hashOk = true; // ex.: ...
