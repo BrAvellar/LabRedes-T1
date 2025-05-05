@@ -104,6 +104,13 @@ public class MessageHandler {
         int seq = Integer.parseInt(tokens[2]);
         String base64 = tokens[3];
         byte[] chunkData = Base64.getDecoder().decode(base64);
+
+        if (node.getArquivosFinalizados().contains(id)) {
+            System.out.println(">>> [INFO] CHUNK ignorado pois transferência já finalizada: ID=" + id + " seq=" + seq);
+            // Envia ACK mesmo assim para evitar retransmissões
+            node.sendUdp("ACK " + id, addr.getHostAddress(), port);
+            return;
+        }
         
         FileInfo fileInfo = receivingFiles.get(id);
         if (fileInfo == null) {
@@ -179,6 +186,7 @@ public class MessageHandler {
                 file.delete();
             }
             
+            node.getArquivosFinalizados().add(id);
             // Remove o arquivo da lista de transferências em andamento
             receivingFiles.remove(id);
             

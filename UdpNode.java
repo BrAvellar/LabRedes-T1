@@ -7,7 +7,7 @@ import java.util.Base64;
 
 public class UdpNode {
     private static final int PORT = 9876;
-    private static final String DEST_IP = "255.255.255.255";
+    private static final String DEST_IP = "192.168.118.255";
 
     private static final long HEARTBEAT_INTERVAL = 5000;
     private static final long DEVICE_TIMEOUT     = 10000;
@@ -21,6 +21,12 @@ public class UdpNode {
     private final Map<String, DeviceInfo> activeDevices = new HashMap<>();
     private final Map<String, PendingMessage> pendingMessages = new ConcurrentHashMap<>();
     private static long messageCounter = 0;
+
+    private final Set<String> arquivosFinalizados = ConcurrentHashMap.newKeySet();
+
+    public Set<String> getArquivosFinalizados() {
+        return arquivosFinalizados;
+    }
 
     public UdpNode(String deviceName) {
         this.deviceName = deviceName;
