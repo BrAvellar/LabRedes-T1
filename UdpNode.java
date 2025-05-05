@@ -87,7 +87,29 @@ public class UdpNode {
 
     private void resendPendingMessages() {
         long now = System.currentTimeMillis();
-        for (PendingMessage pm : pendingMessages.values()) {
+        Iterator<Map.Entry<String, PendingMessage>> it = pendingMessages.entrySet().iterator();
+        
+        while (it.hasNext()) {
+            Map.Entry<String, PendingMessage> entry = it.next();
+            String messageId = entry.getKey();
+            PendingMessage pm = entry.getValue();
+            
+            // Verifica se este é um chunk de um arquivo já finalizado
+            if (messageId.contains("-seq")) {
+                String baseId = messageId.substring(0, messageId.indexOf("-seq"));
+                if (arquivosFinalizados.contains(baseId)) {
+                    it.remove();  // Remove chunks de arquivos já finalizados
+                    continue;
+                }
+            }
+            
+            // Se o arquivo base está finalizado, remove a mensagem
+            if (arquivosFinalizados.contains(messageId)) {
+                it.remove();
+                continue;
+            }
+            
+            // Reenvia mensagens pendentes que não foram confirmadas após 3 segundos
             if ((now - pm.getLastSent()) > 3000) {
                 System.out.println("[RETX] Reenviando ID=" + pm.getId());
                 sendUdp(pm.getMessage(), pm.getDestIp(), pm.getDestPort());

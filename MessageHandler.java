@@ -3,6 +3,7 @@ import java.util.Base64;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Iterator;
 
 public class MessageHandler {
     // Estrutura para rastrear arquivos sendo recebidos
@@ -200,8 +201,29 @@ public class MessageHandler {
         String[] tokens = fullMsg.split(" ", 2);
         if (tokens.length < 2) return;
         String id = tokens[1];
+        
+        // Remove a mensagem pendente correspondente
         PendingMessage pm = node.getPendingMessages().remove(id);
-        if (pm != null) {
+        
+        // Verifica se é um ACK para um END (finalização de arquivo)
+        if (pm != null && pm.getMessage().startsWith("END ")) {
+            // Extrai o ID base (sem o prefixo "END ")
+            String baseId = pm.getMessage().split(" ")[1];
+            
+            // Adiciona o ID à lista de arquivos finalizados
+            node.getArquivosFinalizados().add(baseId);
+            
+            // Remove todas as mensagens pendentes relacionadas a este arquivo (chunks)
+            Iterator<String> it = node.getPendingMessages().keySet().iterator();
+            while (it.hasNext()) {
+                String key = it.next();
+                if (key.equals(baseId) || key.startsWith(baseId + "-seq")) {
+                    it.remove();
+                }
+            }
+            
+            System.out.println(">>> [ACK] Recebido para ID=" + id + " - Transferência de arquivo finalizada");
+        } else if (pm != null) {
             System.out.println(">>> [ACK] Recebido para ID=" + id);
         }
     }
