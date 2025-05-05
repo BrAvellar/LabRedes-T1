@@ -8,7 +8,7 @@ import java.util.Base64;
 
 public class UdpNode {
     private static final int PORT = 9876;
-    private static final String DEST_IP = "127.0.0.1";
+    private static final String DEST_IP = "255.255.255.255";
 
     private static final long HEARTBEAT_INTERVAL = 5000;
     private static final long DEVICE_TIMEOUT     = 10000;
