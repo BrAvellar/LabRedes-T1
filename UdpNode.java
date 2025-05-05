@@ -1,4 +1,3 @@
-// Arquivo: UdpNode.java
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;

@@ -1,10 +1,9 @@
-// Arquivo: PendingMessage.java
 public class PendingMessage {
-    private final String id;       // ID (ex.: "msg1", ou "file1-seq2")
-    private final String message;  // texto completo enviado
+    private final String id;       
+    private final String message;  
     private final String destIp;
     private final int destPort;
-    private long lastSent;         // quando foi enviado pela última vez
+    private long lastSent;         
 
     public PendingMessage(String id, String message, String destIp, int destPort) {
         this.id = id;

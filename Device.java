@@ -1,4 +1,3 @@
-// Arquivo: Device.java (classe principal)
 public class Device {
     public static void main(String[] args) {
         if (args.length < 1) {

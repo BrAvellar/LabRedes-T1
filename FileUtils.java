@@ -1,4 +1,3 @@
-// Arquivo: FileUtils.java
 import java.io.*;
 import java.security.MessageDigest;
 
