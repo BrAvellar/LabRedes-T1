@@ -19,7 +19,7 @@ public class MessageHandler {
             this.fileName = fileName;
             this.size = size;
             this.file = new RandomAccessFile("received_" + fileName, "rw");
-            file.setLength(size); // Pré-aloca o tamanho do arquivo
+            file.setLength(size);
         }
     }
 
@@ -105,7 +105,6 @@ public class MessageHandler {
         String base64 = tokens[3];
         byte[] chunkData = Base64.getDecoder().decode(base64);
         
-        // Implementação do TODO: armazenar no arquivo apropriado
         FileInfo fileInfo = receivingFiles.get(id);
         if (fileInfo == null) {
             System.out.println(">>> [ERRO] Recebido CHUNK para transferência desconhecida: " + id);
@@ -150,7 +149,6 @@ public class MessageHandler {
         String id = tokens[1];
         String hashRecebido = tokens[2];
         
-        // Implementação do TODO: Verificar o hash do arquivo recebido
         FileInfo fileInfo = receivingFiles.get(id);
         if (fileInfo == null) {
             System.out.println(">>> [ERRO] Recebido END para transferência desconhecida: " + id);
@@ -159,7 +157,6 @@ public class MessageHandler {
         }
         
         try {
-            // Fecha o arquivo
             fileInfo.file.close();
             
             // Calcula o hash do arquivo recebido
